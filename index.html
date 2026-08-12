@@ -3,273 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proofolio Workspace - Pro Edition</title>
+    <title>Proofolio - Full Flow Prototype</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Pretendard', sans-serif; background-color: #ffffff; color: #111827; }
-        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-top: 1px solid #e5e7eb; }
-        .tab-active { border-bottom: 2px solid #111827; color: #111827; font-weight: 600; }
-        .tab-inactive { color: #6b7280; font-weight: 500; }
-        .tab-inactive:hover { color: #374151; }
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 20px; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; overflow-x: hidden; }
+        .step-container { display: none; opacity: 0; transition: opacity 0.5s ease-in-out; min-height: 100vh; }
+        .step-active { display: flex; opacity: 1; }
+        .loader { border: 3px solid #e2e8f0; border-bottom-color: #4f46e5; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .fade-up { animation: fadeUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
+<body>
 
-    <!-- Top Navigation -->
-    <header class="flex items-center justify-between px-8 py-4 border-b border-gray-100">
-        <div class="flex items-center gap-4">
-            <h1 class="text-xl font-extrabold tracking-tight">Proofolio</h1>
-            <div class="h-4 w-px bg-gray-300"></div>
-            <span class="text-sm font-medium text-gray-500">실무 역량 검증 워크스페이스</span>
-        </div>
-        <div class="flex items-center gap-6">
-            <div class="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-50 px-3 py-1.5 rounded-full">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                남은 시간 <span class="text-indigo-600 font-bold ml-1">45:00</span>
+    <!-- STEP 1: Upload (지원자 화면) -->
+    <div id="step-1" class="step-container step-active flex-col items-center justify-center bg-slate-50">
+        <div class="max-w-xl w-full bg-white p-10 rounded-2xl shadow-sm border border-slate-200 text-center fade-up">
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Proofolio</h1>
+            <p class="text-slate-500 mb-8">퍼포먼스 마케터 직무 지원</p>
+            
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-12 mb-6 bg-slate-50 hover:bg-slate-100 transition duration-200 cursor-pointer">
+                <svg class="mx-auto h-12 w-12 text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                <p class="text-sm font-medium text-slate-700">포트폴리오 파일(PDF)을 드래그하거나 클릭하여 업로드하세요</p>
+                <p class="text-xs text-slate-400 mt-1">김지훈_마케팅_포트폴리오.pdf</p>
             </div>
-            <button class="bg-gray-900 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
-                최종 제출하기
+            
+            <button onclick="startAnalysis()" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 transition">
+                AI 역량 분석 및 평가 시작하기
             </button>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Workspace -->
-    <main class="flex-1 flex overflow-hidden">
-        
-        <!-- Left Column: Context & Mechanism (Steps 1~4) -->
-        <aside class="w-[320px] bg-gray-50 border-r border-gray-200 flex flex-col custom-scroll overflow-y-auto">
-            <div class="p-6">
-                <!-- AI Briefing Section -->
-                <div class="mb-8">
-                    <p class="text-xs font-bold text-indigo-600 tracking-wider uppercase mb-2">AI Analysis Brief</p>
-                    <h2 class="text-2xl font-bold leading-tight mb-4">왜 이 과제를<br>풀어야 하나요?</h2>
-                    
-                    <div class="space-y-4">
-                        <!-- Proven Skills -->
-                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <h3 class="text-sm font-bold text-gray-900">검증 완료된 역량</h3>
-                            </div>
-                            <p class="text-xs text-gray-600 leading-relaxed">
-                                포트폴리오 분석 결과, 경영정보학 전공 기반의 <b>데이터 분석</b> 및 <b>시스템 구조화</b> 역량이 매우 우수합니다. (GA4, SQL 활용 경험 충분)
-                            </p>
-                        </div>
-                        
-                        <!-- Skill Gap -->
-                        <div class="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                <h3 class="text-sm font-bold text-gray-900">Adaptive Challenge</h3>
-                            </div>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-3">
-                                마케팅 JD에서 요구하는 <b>'한정된 예산 내 우선순위 설정 및 캠페인 최적화'</b> 경험이 서류상 미검증(Skill Gap) 상태입니다. 이를 확인하기 위한 맞춤형 과제가 생성되었습니다.
-                            </p>
-                            <span class="inline-block bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2 py-1 rounded">평가 역량: 예산 배분, 의사결정 논리</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mission Description -->
-                <div>
-                    <h3 class="text-lg font-bold mb-3">오늘의 미션</h3>
-                    <div class="prose prose-sm text-gray-600">
-                        <p>당신은 신규 런칭하는 뷰티 브랜드의 퍼포먼스 마케터입니다. 3분기 잔여 마케팅 예산은 <b>500만 원</b>입니다.</p>
-                        <p>우측의 <b>1) 매체별 지난 분기 효율 데이터</b>와 <b>2) 고객 VOC</b>를 분석하여, 예산을 투입할 <b>가장 효율적인 매체 2개</b>를 선정하고 예산 배분율과 그 이유를 논리적으로 작성해 주세요.</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Center Column: Working Area (Data & Resources) -->
-        <section class="flex-1 flex flex-col bg-white">
-            <!-- Tabs -->
-            <div class="flex px-8 border-b border-gray-200">
-                <button class="py-4 px-2 mr-8 tab-active cursor-pointer" onclick="switchTab('data')">지난 분기 매체 데이터 (ROAS)</button>
-                <button class="py-4 px-2 tab-inactive cursor-pointer" onclick="switchTab('voc')">고객 VOC 리포트</button>
-            </div>
+    <!-- STEP 2: AI Analyzing Loading -->
+    <div id="step-2" class="step-container flex-col items-center justify-center bg-slate-900 text-white">
+        <div class="text-center">
+            <div class="loader w-16 h-16 mb-8"></div>
+            <h2 id="loading-text" class="text-2xl font-bold mb-2">JD와 포트폴리오를 분석 중입니다...</h2>
+            <p class="text-slate-400 text-sm">지원자의 경험과 직무 요구 역량을 교차 검증하고 있습니다.</p>
             
-            <!-- Tab Content -->
-            <div class="flex-1 p-8 custom-scroll overflow-y-auto bg-gray-50/50">
-                <div id="content-data" class="block">
-                    <h4 class="text-base font-bold mb-4">매체별 퍼포먼스 성과 지표 (단위: 원)</h4>
-                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                <tr>
-                                    <th class="px-6 py-4 font-semibold">매체명</th>
-                                    <th class="px-6 py-4 font-semibold">CAC (고객획득비용)</th>
-                                    <th class="px-6 py-4 font-semibold">LTV (생애가치)</th>
-                                    <th class="px-6 py-4 font-semibold">전환율(CVR)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 font-medium">Meta Ads (인스타그램)</td>
-                                    <td class="px-6 py-4 text-red-500 font-medium">15,000</td>
-                                    <td class="px-6 py-4">45,000</td>
-                                    <td class="px-6 py-4">2.4%</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 font-medium">Google Search Ads</td>
-                                    <td class="px-6 py-4">8,500</td>
-                                    <td class="px-6 py-4 text-emerald-600 font-medium">62,000</td>
-                                    <td class="px-6 py-4 text-emerald-600 font-medium">5.1%</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 font-medium">Naver GFA (배너)</td>
-                                    <td class="px-6 py-4">22,000</td>
-                                    <td class="px-6 py-4">30,000</td>
-                                    <td class="px-6 py-4 text-red-500 font-medium">0.8%</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 font-medium">카카오 비즈보드</td>
-                                    <td class="px-6 py-4">12,000</td>
-                                    <td class="px-6 py-4">35,000</td>
-                                    <td class="px-6 py-4">1.9%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="mt-12 max-w-md mx-auto space-y-4 text-left">
+                <div class="flex items-center text-slate-300 opacity-50" id="log-1">
+                    <svg class="w-5 h-5 mr-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>STEP 1. JD 핵심 역량 구조화 완료</span>
                 </div>
-                
-                <div id="content-voc" class="hidden space-y-4">
-                    <h4 class="text-base font-bold mb-4">최근 1개월 주요 VOC 요약</h4>
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm border-l-4 border-l-indigo-500">
-                        <p class="text-sm font-medium text-gray-800">"인스타그램에서 광고 보고 샀는데, 상세페이지에서 헤맸어요."</p>
-                        <p class="text-xs text-gray-400 mt-2">20대 여성 / Meta Ads 유입</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm border-l-4 border-l-emerald-500">
-                        <p class="text-sm font-medium text-gray-800">"검색해서 들어왔는데 평소 찾던 기능이 잘 설명되어 있어서 바로 구매했습니다."</p>
-                        <p class="text-xs text-gray-400 mt-2">30대 남성 / Google Search 유입</p>
-                    </div>
+                <div class="flex items-center text-slate-300 opacity-50" id="log-2">
+                    <svg class="w-5 h-5 mr-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>STEP 2. 포트폴리오 경험 추출 완료</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- Right Column: Submission Area -->
-        <aside class="w-[400px] border-l border-gray-200 bg-white flex flex-col">
-            <div class="p-6 border-b border-gray-100">
-                <h3 class="text-lg font-bold">결과물 작성</h3>
-                <p class="text-xs text-gray-500 mt-1">분석한 데이터를 바탕으로 의사결정을 내려주세요.</p>
-            </div>
-            <div class="flex-1 p-6 custom-scroll overflow-y-auto space-y-6">
-                
-                <div>
-                    <label class="block text-sm font-bold mb-2">1순위 매체 선택</label>
-                    <select class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3">
-                        <option>매체를 선택하세요</option>
-                        <option>Meta Ads</option>
-                        <option>Google Search Ads</option>
-                        <option>Naver GFA</option>
-                        <option>카카오 비즈보드</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold mb-2">2순위 매체 선택</label>
-                    <select class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3">
-                        <option>매체를 선택하세요</option>
-                        <option>Meta Ads</option>
-                        <option>Google Search Ads</option>
-                        <option>Naver GFA</option>
-                        <option>카카오 비즈보드</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold mb-2">예산 배분율 및 의사결정 근거 <span class="text-red-500">*</span></label>
-                    <textarea rows="10" class="block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-xl border border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 resize-none" placeholder="데이터와 VOC를 연계하여 Trade-off(비용 대비 효과)를 고려한 논리를 작성해 주세요."></textarea>
-                </div>
-            </div>
-        </aside>
-    </main>
-
-    <!-- STEP 5~6: AI Process Evidence Overlay (HR View Toggle) -->
-    <div class="fixed bottom-0 w-full glass-panel transition-transform duration-500 transform translate-y-[calc(100%-48px)]" id="ai-tracker">
-        <!-- Toggle Button -->
-        <div class="h-12 flex items-center justify-center cursor-pointer" onclick="toggleTracker()">
-            <div class="flex items-center gap-2 text-sm font-bold text-indigo-600">
-                <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                Show AI Process Log (HR View)
-            </div>
-        </div>
-        
-        <!-- Timeline Content -->
-        <div class="p-8 max-w-6xl mx-auto flex gap-12">
-            <div class="w-1/3">
-                <h3 class="text-lg font-bold mb-1">행동 패턴 분석 (Process Evidence)</h3>
-                <p class="text-sm text-gray-600 mb-4">지원자의 정보 탐색 및 사고 과정을 실시간으로 추적합니다.</p>
-                <div class="flex items-center gap-4 text-sm font-medium">
-                    <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-400"></span> 데이터 탐색 (60%)</div>
-                    <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-400"></span> 근거 작성 (40%)</div>
-                </div>
-                <div class="w-full h-2 bg-gray-200 rounded-full mt-3 flex overflow-hidden">
-                    <div class="w-[60%] bg-blue-400 h-full"></div>
-                    <div class="w-[40%] bg-emerald-400 h-full"></div>
-                </div>
-            </div>
-            
-            <div class="w-2/3 border-l border-gray-200 pl-8">
-                <div class="space-y-4">
-                    <div class="flex gap-4 items-start">
-                        <span class="text-xs font-mono text-gray-400 mt-1">00:01</span>
-                        <div>
-                            <p class="text-sm font-semibold text-gray-900">데이터 지표 확인</p>
-                            <p class="text-xs text-gray-500">ROAS 탭에서 45초간 머무르며 Google Search Ads의 높은 LTV 확인</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 items-start">
-                        <span class="text-xs font-mono text-gray-400 mt-1">00:05</span>
-                        <div>
-                            <p class="text-sm font-semibold text-gray-900">교차 검증 (VOC 열람)</p>
-                            <p class="text-xs text-gray-500">수치 데이터 확인 후 바로 고객 VOC를 조회하여 정성적 이유 분석 (문제 해결력 관찰됨)</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 items-start">
-                        <span class="text-xs font-mono text-gray-400 mt-1">00:12</span>
-                        <div>
-                            <p class="text-sm font-semibold text-indigo-600">의사결정 및 작성 시작</p>
-                            <p class="text-xs text-gray-500">Meta Ads의 높은 CAC와 VOC 불만을 연계하여 투자 축소 논리 작성 시작</p>
-                        </div>
-                    </div>
+                <div class="flex items-center text-slate-300 opacity-50" id="log-3">
+                    <svg class="w-5 h-5 mr-3 text-indigo-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span>STEP 3. Skill Gap 판단 및 맞춤형 과제 생성 중...</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('button[onclick^="switchTab"]').forEach(btn => {
-                btn.classList.remove('tab-active');
-                btn.classList.add('tab-inactive');
-            });
-            event.target.classList.remove('tab-inactive');
-            event.target.classList.add('tab-active');
-
-            document.getElementById('content-data').classList.add('hidden');
-            document.getElementById('content-voc').classList.add('hidden');
+    <!-- STEP 3: Skill Gap Detection Result -->
+    <div id="step-3" class="step-container flex-col items-center justify-center bg-slate-50">
+        <div class="max-w-2xl w-full bg-white p-10 rounded-2xl shadow-sm border border-slate-200 fade-up">
+            <h2 class="text-2xl font-bold mb-6 border-b border-slate-100 pb-4">포트폴리오 분석 결과</h2>
             
-            document.getElementById('content-' + tabId).classList.remove('hidden');
-            document.getElementById('content-' + tabId).classList.add('block');
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                    <div>
+                        <span class="font-bold text-slate-800">데이터 분석 (GA4, SQL)</span>
+                        <p class="text-xs text-slate-500 mt-1">포트폴리오 내 성과 하락 원인 분석 경험 확인됨</p>
+                    </div>
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">검증 완료</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-indigo-50 rounded-lg border border-indigo-100 ring-2 ring-indigo-500 ring-opacity-20">
+                    <div>
+                        <span class="font-bold text-indigo-800">예산 최적화 및 우선순위 설정</span>
+                        <p class="text-xs text-indigo-600 mt-1">관련 경험 부족 (제출된 자료만으로 검증 불가)</p>
+                    </div>
+                    <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full">Skill Gap</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 text-white p-6 rounded-xl mb-8">
+                <h3 class="text-sm font-bold text-indigo-400 mb-2">Adaptive Challenge 생성됨</h3>
+                <p class="text-lg font-medium leading-snug">"아직 증명되지 않은 '예산 최적화' 역량을 검증하기 위한 45분짜리 실무 시나리오 과제가 준비되었습니다."</p>
+            </div>
+
+            <button onclick="goToStep(4)" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition">
+                맞춤형 실무 과제 시작하기
+            </button>
+        </div>
+    </div>
+
+    <!-- STEP 4: Workspace -->
+    <div id="step-4" class="step-container flex-col bg-white">
+        <header class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+            <h1 class="text-lg font-bold">Proofolio Workspace</h1>
+            <div class="text-sm font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg">남은 시간 44:58</div>
+        </header>
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Problem -->
+            <div class="w-1/3 bg-slate-50 border-r border-slate-200 p-6 overflow-y-auto">
+                <h2 class="text-xl font-bold mb-4">미션: 매체 예산 최적화</h2>
+                <p class="text-sm text-slate-600 leading-relaxed mb-6">
+                    신규 뷰티 브랜드의 마케터로서 잔여 예산 500만 원을 집행해야 합니다. 우측의 'ROAS 데이터'와 'VOC 리포트'를 바탕으로 효율이 가장 좋은 매체 2개를 선정하고 근거를 작성하세요.
+                </p>
+                <div class="bg-white p-4 rounded-lg border border-slate-200 mb-4 shadow-sm">
+                    <h3 class="text-sm font-bold mb-2">1. 데이터 (ROAS)</h3>
+                    <ul class="text-xs space-y-2 text-slate-600">
+                        <li>- Meta Ads: CVR 2.4% / CAC 15,000</li>
+                        <li>- Google Search: CVR 5.1% / CAC 8,500</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                    <h3 class="text-sm font-bold mb-2">2. 고객 VOC</h3>
+                    <p class="text-xs text-slate-600">"검색해서 들어왔을 때 정보가 정확해서 샀어요." (Google 유입)</p>
+                </div>
+            </div>
+            <!-- Solution Input -->
+            <div class="flex-1 p-8">
+                <h3 class="text-lg font-bold mb-4">결과물 작성</h3>
+                <textarea class="w-full h-64 p-4 border border-slate-300 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none resize-none mb-6" placeholder="여기에 매체 선정 근거를 작성합니다..."></textarea>
+                <button onclick="submitWorkspace()" class="bg-slate-900 text-white font-bold py-3 px-8 rounded-xl hover:bg-slate-800 transition float-right">
+                    최종 제출하기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 5: AI Evaluating Loading -->
+    <div id="step-5" class="step-container flex-col items-center justify-center bg-indigo-900 text-white">
+        <div class="text-center">
+            <div class="loader w-16 h-16 mb-8 border-t-white"></div>
+            <h2 class="text-2xl font-bold mb-2">수행 과정 및 결과 분석 중...</h2>
+            <p class="text-indigo-200 text-sm">결과물뿐만 아니라 과제를 해결한 사고 과정(Process)을 평가합니다.</p>
+        </div>
+    </div>
+
+    <!-- STEP 6: Final HR Report -->
+    <div id="step-6" class="step-container flex-col bg-slate-50">
+        <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center">
+            <div>
+                <span class="text-xs font-bold text-slate-400 tracking-wider">HR DASHBOARD</span>
+                <h2 class="text-xl font-bold text-slate-800 mt-1">김지훈 지원자 최종 리포트</h2>
+            </div>
+            <button class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-bold">면접 연계 질문 보기</button>
+        </header>
+        
+        <div class="p-8 max-w-5xl mx-auto w-full space-y-6 fade-up">
+            <!-- Overall Score -->
+            <div class="flex gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 w-1/3 flex flex-col justify-center items-center">
+                    <p class="text-sm text-slate-500 font-medium mb-2">최종 종합 점수</p>
+                    <p class="text-5xl font-extrabold text-slate-800">92<span class="text-2xl text-slate-400 font-medium">/100</span></p>
+                    <span class="mt-4 px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">우수 (합격 권장)</span>
+                </div>
+                
+                <!-- Process Evidence -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 w-2/3">
+                    <h3 class="text-base font-bold mb-4">행동 패턴 관찰 (Process Evidence)</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="mt-0.5 bg-blue-100 text-blue-600 p-1 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">입체적 데이터 활용</p>
+                                <p class="text-xs text-slate-500 mt-1">수치 데이터(ROAS) 확인 후 즉각적으로 정성 데이터(VOC)를 교차 조회하여 논리를 보강함.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="mt-0.5 bg-emerald-100 text-emerald-600 p-1 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">Trade-off 고려 의사결정</p>
+                                <p class="text-xs text-slate-500 mt-1">단순 효율성뿐만 아니라 고객 획득 비용(CAC)을 고려하여 예산을 차등 분배하는 실무적 판단력이 돋보임.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Breakdown -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 border-b border-slate-100 text-sm">
+                        <tr>
+                            <th class="py-4 px-6 font-semibold text-slate-600">평가 역량</th>
+                            <th class="py-4 px-6 font-semibold text-slate-600">검증 방식</th>
+                            <th class="py-4 px-6 font-semibold text-slate-600">결과</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-sm">
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-slate-800">데이터 분석력</td>
+                            <td class="py-4 px-6 text-slate-500">포트폴리오 분석 (사전 검증)</td>
+                            <td class="py-4 px-6"><span class="text-slate-800 font-semibold">88점</span></td>
+                        </tr>
+                        <tr class="bg-indigo-50/30">
+                            <td class="py-4 px-6 font-bold text-indigo-700 flex items-center gap-2">
+                                우선순위 및 예산 설정
+                                <span class="bg-indigo-100 text-indigo-700 text-[10px] px-2 py-0.5 rounded">Skill Gap 해결</span>
+                            </td>
+                            <td class="py-4 px-6 text-slate-500">맞춤형 실무 과제 (진행 검증)</td>
+                            <td class="py-4 px-6"><span class="text-indigo-700 font-bold">94점</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-slate-800">문제 해결 논리성</td>
+                            <td class="py-4 px-6 text-slate-500">과제 수행 Process 로그 분석</td>
+                            <td class="py-4 px-6"><span class="text-slate-800 font-semibold">90점</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToStep(stepNumber) {
+            document.querySelectorAll('.step-container').forEach(el => {
+                el.classList.remove('step-active');
+            });
+            const nextStep = document.getElementById('step-' + stepNumber);
+            nextStep.classList.add('step-active');
+            
+            // Re-trigger animation
+            const fadeEls = nextStep.querySelectorAll('.fade-up');
+            fadeEls.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // trigger reflow
+                el.style.animation = null; 
+            });
         }
 
-        let trackerOpen = false;
-        function toggleTracker() {
-            const tracker = document.getElementById('ai-tracker');
-            if(trackerOpen) {
-                tracker.classList.add('translate-y-[calc(100%-48px)]');
-                tracker.classList.remove('translate-y-0');
-            } else {
-                tracker.classList.remove('translate-y-[calc(100%-48px)]');
-                tracker.classList.add('translate-y-0');
-            }
-            trackerOpen = !trackerOpen;
+        function startAnalysis() {
+            goToStep(2);
+            
+            // Simulate AI Loading Steps
+            setTimeout(() => document.getElementById('log-1').classList.remove('opacity-50'), 1000);
+            setTimeout(() => document.getElementById('log-2').classList.remove('opacity-50'), 2500);
+            setTimeout(() => {
+                document.getElementById('log-3').classList.remove('opacity-50');
+                document.getElementById('loading-text').innerText = "Skill Gap을 발견했습니다!";
+            }, 4000);
+            
+            // Move to Step 3
+            setTimeout(() => goToStep(3), 5500);
+        }
+
+        function submitWorkspace() {
+            goToStep(5);
+            // Move to Final Report after 3 seconds
+            setTimeout(() => goToStep(6), 3000);
         }
     </script>
 </body>
