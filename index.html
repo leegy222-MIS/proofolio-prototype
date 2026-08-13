@@ -1,257 +1,170 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proofolio - Full Flow Prototype</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; overflow-x: hidden; }
-        .step-container { display: none; opacity: 0; transition: opacity 0.5s ease-in-out; min-height: 100vh; }
-        .step-active { display: flex; opacity: 1; }
-        .loader { border: 3px solid #e2e8f0; border-bottom-color: #4f46e5; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
-        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .fade-up { animation: fadeUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proofolio — Claim Verification Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+:root{--bg:#f5f6fa;--card:#fff;--text:#111827;--muted:#667085;--line:#e6e8ee;--primary:#635bff;--soft:#f0efff;--green:#16a36b;--greenSoft:#e9f8f1;--red:#ef5350;--dark:#11131c;--orange:#f59e0b;--shadow:0 18px 55px rgba(16,24,40,.08)}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,'Noto Sans KR',sans-serif} button,textarea{font:inherit}button{cursor:pointer;border:0}.step{display:none;min-height:100vh}.step.active{display:flex}.container{width:min(1120px,calc(100% - 40px));margin:auto}
+.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#fff;border-bottom:1px solid var(--line)}.logo{font-size:21px;font-weight:800;letter-spacing:-1px}.logo i{display:inline-block;width:9px;height:9px;background:var(--primary);border-radius:3px;margin-right:7px}.badge{font-size:11px;font-weight:800;padding:7px 11px;border-radius:999px;background:var(--soft);color:#584de2}.btn{padding:13px 18px;border-radius:11px;font-weight:800;transition:.2s}.btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px rgba(99,91,255,.22)}.btn-primary:hover{transform:translateY(-2px)}.btn-dark{background:var(--dark);color:#fff}.btn-light{background:#f4f5f8;color:#475467}.full{width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--primary);font-size:11px;font-weight:800;letter-spacing:.06em}.dot{width:7px;height:7px;border-radius:50%;background:var(--primary)}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 15%,rgba(99,91,255,.12),transparent 30%),radial-gradient(circle at 85% 75%,rgba(124,58,237,.10),transparent 28%)}.hero .container{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;min-height:100vh}.hero h1{font-size:clamp(42px,5vw,66px);line-height:1.05;letter-spacing:-3px;margin:17px 0 22px}.hero h1 span{color:var(--primary)}.lead{font-size:16px;line-height:1.8;color:var(--muted);max-width:600px}.upload-card{background:rgba(255,255,255,.9);border:1px solid #fff;border-radius:24px;padding:28px;box-shadow:var(--shadow)}.file-box{border:1.5px dashed #cdd1dc;border-radius:18px;padding:42px 24px;text-align:center;background:#fafaff}.upload-icon{width:56px;height:56px;border-radius:16px;background:var(--soft);display:grid;place-items:center;margin:0 auto 14px;color:var(--primary);font-size:25px}.file-name{font-size:11px;color:#98a2b3;margin-top:12px}.mini-stats{display:flex;gap:10px;margin-top:25px}.mini-stat{flex:1;background:#fff;border:1px solid var(--line);padding:13px;border-radius:13px}.mini-stat b{display:block;font-size:15px}.mini-stat span{font-size:10px;color:var(--muted)}
+.loading{background:#0b0c12;color:#fff;align-items:center;justify-content:center;text-align:center}.loader-ring{width:70px;height:70px;border:3px solid #292c38;border-top-color:#8b7cff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 26px}@keyframes spin{to{transform:rotate(360deg)}}.loading h2{font-size:27px;margin:0 0 8px}.loading p{font-size:13px;color:#8f94a5}.logs{width:min(470px,90vw);margin:38px auto 0;text-align:left}.log{padding:13px 0;border-bottom:1px solid #20222d;color:#73798b;font-size:12px}.log.done{color:#dfe2ea}.check{color:#55d6a1;font-weight:900;margin-right:9px}
+.result{align-items:center;background:#f7f7fb}.result-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:34px;box-shadow:var(--shadow);max-width:780px}.result-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:25px}.result-head h2{margin:7px 0 4px;font-size:27px;letter-spacing:-1px}.result-head p{font-size:12px;color:var(--muted);margin:0}.skill{padding:17px;border:1px solid var(--line);border-radius:15px;margin:10px 0;display:flex;justify-content:space-between;gap:15px}.skill.gap{background:#f6f4ff;border-color:#d9d5ff}.skill small{display:block;color:var(--muted);margin-top:5px;font-size:11px}.status{font-size:10px;font-weight:800;padding:7px 10px;border-radius:999px;white-space:nowrap;height:max-content}.ok{background:var(--greenSoft);color:#087a4f}.gap-status{background:#ebe8ff;color:#584de2}.challenge{margin:23px 0;padding:21px;border-radius:17px;background:linear-gradient(135deg,#11131c,#282151);color:#fff}.challenge small{color:#a79dff;font-weight:800;font-size:10px}.challenge p{line-height:1.6;margin:8px 0 0;font-size:13px}
+.workspace{background:#fff;flex-direction:column}.workspace-main{display:grid;grid-template-columns:390px 1fr;flex:1;min-height:calc(100vh - 72px)}.sidebar{background:#f8f9fb;border-right:1px solid var(--line);padding:28px;overflow:auto}.editor{padding:30px 38px;max-width:1000px;width:100%}.section-label{font-size:10px;font-weight:800;color:#98a2b3;letter-spacing:.08em}.sidebar h2{font-size:22px;letter-spacing:-1px;margin:8px 0}.mission{font-size:12px;line-height:1.75;color:#667085}
+.claim-card{margin-top:20px;background:#fff;border:1px solid #dedfea;border-radius:16px;padding:17px;box-shadow:0 5px 18px rgba(16,24,40,.03)}.claim-card .claim{font-size:13px;line-height:1.65;font-weight:700;margin:7px 0 0}.claim-source{font-size:10px;color:#98a2b3;margin-top:8px}.verification{margin-top:12px;padding:13px;border-radius:12px;background:#f7f7fa}.verification div{font-size:11px;padding:5px 0;display:flex;justify-content:space-between}.verified{color:var(--green);font-weight:800}.needed{color:#584de2;font-weight:800}
+.workspace-title{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}.workspace-title h2{font-size:24px;margin:6px 0 0;letter-spacing:-1px}.workspace-title p{font-size:11px;color:var(--muted);margin:0}
+.dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.data-panel,.voc-panel{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title b{font-size:12px}.panel-title span{font-size:10px;color:#98a2b3}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}.kpi{background:#f8f9fc;border-radius:11px;padding:11px}.kpi span{display:block;font-size:9px;color:#98a2b3}.kpi b{display:block;font-size:17px;margin-top:4px}.kpi em{font-size:9px;color:var(--green);font-style:normal}.chart{display:flex;align-items:end;gap:17px;height:130px;padding:7px 12px 0;border-bottom:1px solid #eef0f4}.bar-wrap{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:6px}.bar{width:45%;min-height:18px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#7b72ff,#635bff)}.bar-meta{height:64%}.bar-google{height:94%}.bar-naver{height:76%}.bar-wrap b{font-size:9px}.bar-wrap small{font-size:8px;color:#98a2b3}
+.voc{padding:15px;border-radius:13px;background:#faf9ff;border:1px solid #ebe8ff;margin-bottom:10px}.voc p{font-size:12px;line-height:1.65;margin:0}.voc small{font-size:9px;color:#98a2b3}.signal{display:flex;gap:8px;align-items:center;padding:10px;border-radius:10px;background:#f8f9fb;font-size:10px;color:#475467}.signal i{width:7px;height:7px;background:var(--green);border-radius:50%}
+.task-card{margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px}.task-card h3{font-size:14px;margin:0 0 5px}.task-card p{font-size:11px;line-height:1.7;color:#667085;margin:0}.answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.answer-box{background:#fafbfc;border:1px solid #e1e4ea;border-radius:12px;padding:12px}.answer-box label{display:block;font-size:9px;color:#98a2b3;font-weight:800;margin-bottom:6px}.answer-box input{width:100%;border:0;background:transparent;outline:0;font-weight:700;font-size:12px;color:#111827}.textarea-wrap{margin-top:10px}.textarea-wrap label{font-size:9px;color:#98a2b3;font-weight:800}.textarea-wrap textarea{width:100%;height:130px;margin-top:6px;border:1px solid #e0e3e9;border-radius:12px;padding:12px;resize:none;outline:0;background:#fbfbfd;font-size:11px;line-height:1.7}.textarea-wrap textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,91,255,.1);background:#fff}.hint{font-size:9px;color:#98a2b3;margin-top:7px}
+.proof-intro{background:linear-gradient(135deg,#f4f2ff,#fbfbff);border:1px solid #e2defe;border-radius:15px;padding:16px;margin-bottom:15px}.proof-intro b{font-size:13px}.proof-intro p{font-size:11px;line-height:1.65;color:#667085;margin:6px 0 0}
+.report{background:#f5f6fa;flex-direction:column}.report-body{width:min(1120px,calc(100% - 40px));margin:30px auto 60px}.report-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px}.report-title h1{font-size:31px;letter-spacing:-1.5px;margin:6px 0}.report-title p{font-size:11px;color:#667085}.grid{display:grid;grid-template-columns:300px 1fr;gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:22px;box-shadow:0 8px 28px rgba(16,24,40,.035)}.score{text-align:center}.score-label{font-size:12px;color:#667085}.score-number{font-size:64px;font-weight:800;letter-spacing:-5px;margin:10px 0}.score-number span{font-size:20px;color:#a0a6b2;letter-spacing:0}.progress{height:8px;background:#eceef4;border-radius:99px;overflow:hidden}.progress i{display:block;width:92%;height:100%;background:linear-gradient(90deg,#635bff,#8b7cff)}.evidence h3{margin:0;font-size:15px}.evidence-item{display:flex;gap:11px;margin:16px 0}.evidence-icon{width:33px;height:33px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--primary);flex:none}.evidence-item b{font-size:12px}.evidence-item p{font-size:11px;color:#667085;line-height:1.6;margin:4px 0}.claim-proof{margin-top:16px;background:#11131c;color:#fff;border-radius:17px;padding:18px}.claim-proof .arrow{color:#8f85ff;padding:4px 0;font-size:12px}.claim-proof b{font-size:12px}.claim-proof span{font-size:10px;color:#b7bbc8}.table-card{margin-top:16px;padding:0;overflow:hidden}.table-title{padding:18px 22px;border-bottom:1px solid var(--line);font-weight:800;font-size:13px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:15px 22px;border-bottom:1px solid #f0f1f4;font-size:12px}th{color:#667085;background:#fafbfc;font-size:10px}td:first-child{font-weight:700}.highlight td{background:#f5f3ff}.score-blue{color:#584de2;font-weight:800}
+@media(max-width:900px){.hero .container{grid-template-columns:1fr;padding:70px 0}.workspace-main,.dashboard-grid,.grid{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.editor{padding:24px}.report-body{width:calc(100% - 24px)}.answer-grid{grid-template-columns:1fr}.topbar{padding:0 17px}}
+</style>
 </head>
 <body>
 
-    <!-- STEP 1: Upload (지원자 화면) -->
-    <div id="step-1" class="step-container step-active flex-col items-center justify-center bg-slate-50">
-        <div class="max-w-xl w-full bg-white p-10 rounded-2xl shadow-sm border border-slate-200 text-center fade-up">
-            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Proofolio</h1>
-            <p class="text-slate-500 mb-8">퍼포먼스 마케터 직무 지원</p>
-            
-            <div class="border-2 border-dashed border-slate-300 rounded-xl p-12 mb-6 bg-slate-50 hover:bg-slate-100 transition duration-200 cursor-pointer">
-                <svg class="mx-auto h-12 w-12 text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                <p class="text-sm font-medium text-slate-700">포트폴리오 파일(PDF)을 드래그하거나 클릭하여 업로드하세요</p>
-                <p class="text-xs text-slate-400 mt-1">김지훈_마케팅_포트폴리오.pdf</p>
-            </div>
-            
-            <button onclick="startAnalysis()" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 transition">
-                AI 역량 분석 및 평가 시작하기
-            </button>
-        </div>
-    </div>
+<section id="step-1" class="step active hero">
+<div class="container">
+<div>
+<div class="eyebrow"><i class="dot"></i> PORTFOLIO → PROOF</div>
+<h1>포트폴리오의 <span>주장</span>을<br>실제 수행으로 증명합니다.</h1>
+<p class="lead">Proofolio는 포트폴리오에 적힌 경험을 분석하고, 아직 검증되지 않은 부분만 실제 업무 시나리오로 확인합니다.</p>
+<div class="mini-stats">
+<div class="mini-stat"><b>Claim</b><span>포트폴리오의 주장</span></div>
+<div class="mini-stat"><b>Verify</b><span>실제 수행 검증</span></div>
+<div class="mini-stat"><b>Proof</b><span>새로운 역량 증거</span></div>
+</div>
+</div>
+<div class="upload-card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><div><div class="logo"><i></i>Proofolio</div><div style="font-size:11px;color:#98a2b3;margin-top:5px">Portfolio Claim Verification</div></div><span class="badge">PERFORMANCE MARKETING</span></div>
+<div class="file-box"><div class="upload-icon">↑</div><b>포트폴리오를 업로드하세요</b><div style="font-size:11px;color:#98a2b3;margin-top:6px">PDF · 최대 20MB</div><div class="file-name">김지훈_마케팅_포트폴리오.pdf</div></div>
+<button class="btn btn-primary full" style="margin-top:16px" onclick="startAnalysis()">포트폴리오 검증 시작하기 →</button>
+</div>
+</div>
+</section>
 
-    <!-- STEP 2: AI Analyzing Loading -->
-    <div id="step-2" class="step-container flex-col items-center justify-center bg-slate-900 text-white">
-        <div class="text-center">
-            <div class="loader w-16 h-16 mb-8"></div>
-            <h2 id="loading-text" class="text-2xl font-bold mb-2">JD와 포트폴리오를 분석 중입니다...</h2>
-            <p class="text-slate-400 text-sm">지원자의 경험과 직무 요구 역량을 교차 검증하고 있습니다.</p>
-            
-            <div class="mt-12 max-w-md mx-auto space-y-4 text-left">
-                <div class="flex items-center text-slate-300 opacity-50" id="log-1">
-                    <svg class="w-5 h-5 mr-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    <span>STEP 1. JD 핵심 역량 구조화 완료</span>
-                </div>
-                <div class="flex items-center text-slate-300 opacity-50" id="log-2">
-                    <svg class="w-5 h-5 mr-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    <span>STEP 2. 포트폴리오 경험 추출 완료</span>
-                </div>
-                <div class="flex items-center text-slate-300 opacity-50" id="log-3">
-                    <svg class="w-5 h-5 mr-3 text-indigo-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    <span>STEP 3. Skill Gap 판단 및 맞춤형 과제 생성 중...</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<section id="step-2" class="step loading">
+<div><div class="loader-ring"></div><h2 id="loading-text">포트폴리오의 경험과 주장을 분석하고 있습니다</h2><p>JD와 비교하여 실제 검증이 필요한 역량을 찾고 있습니다.</p>
+<div class="logs"><div id="log1" class="log"><span class="check">✓</span> Portfolio Claim 추출</div><div id="log2" class="log"><span class="check">✓</span> JD 요구 역량과 교차 분석</div><div id="log3" class="log"><span style="color:#8b7cff">✦</span> 검증이 필요한 Claim 선정</div></div></div>
+</section>
 
-    <!-- STEP 3: Skill Gap Detection Result -->
-    <div id="step-3" class="step-container flex-col items-center justify-center bg-slate-50">
-        <div class="max-w-2xl w-full bg-white p-10 rounded-2xl shadow-sm border border-slate-200 fade-up">
-            <h2 class="text-2xl font-bold mb-6 border-b border-slate-100 pb-4">포트폴리오 분석 결과</h2>
-            
-            <div class="space-y-4 mb-8">
-                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
-                    <div>
-                        <span class="font-bold text-slate-800">데이터 분석 (GA4, SQL)</span>
-                        <p class="text-xs text-slate-500 mt-1">포트폴리오 내 성과 하락 원인 분석 경험 확인됨</p>
-                    </div>
-                    <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">검증 완료</span>
-                </div>
-                
-                <div class="flex items-center justify-between p-4 bg-indigo-50 rounded-lg border border-indigo-100 ring-2 ring-indigo-500 ring-opacity-20">
-                    <div>
-                        <span class="font-bold text-indigo-800">예산 최적화 및 우선순위 설정</span>
-                        <p class="text-xs text-indigo-600 mt-1">관련 경험 부족 (제출된 자료만으로 검증 불가)</p>
-                    </div>
-                    <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full">Skill Gap</span>
-                </div>
-            </div>
+<section id="step-3" class="step result">
+<div class="result-card container">
+<div class="result-head"><div><div class="eyebrow"><i class="dot"></i> CLAIM ANALYSIS COMPLETE</div><h2>포트폴리오에서 발견한 주장</h2><p>김지훈 · 퍼포먼스 마케터 지원</p></div><span class="badge">3 CLAIMS</span></div>
+<div class="skill"><div><b>광고 데이터를 분석해 성과를 개선했다</b><small>GA4 · CVR · CAC · ROAS 관련 프로젝트 경험 확인</small></div><span class="status ok">근거 확인</span></div>
+<div class="skill"><div><b>고객 VOC를 바탕으로 캠페인 방향을 조정했다</b><small>검색 유입 고객 VOC 및 랜딩 개선 경험 확인</small></div><span class="status ok">근거 확인</span></div>
+<div class="skill gap"><div><b>성과에 따라 광고 예산을 최적화했다</b><small>예산 배분의 실제 의사결정 과정은 포트폴리오만으로 확인하기 어려움</small></div><span class="status gap-status">검증 필요</span></div>
+<div class="challenge"><small>✦ WHY THIS CHALLENGE?</small><p><b>새로운 마케팅 시험을 내는 것이 아닙니다.</b><br>포트폴리오에서 주장한 <b>'예산 최적화'</b>를 실제 업무 상황에서도 수행할 수 있는지 확인합니다.</p></div>
+<button class="btn btn-primary full" onclick="goToStep(4)">해당 Claim 실제 수행으로 검증하기 →</button>
+</div>
+</section>
 
-            <div class="bg-slate-900 text-white p-6 rounded-xl mb-8">
-                <h3 class="text-sm font-bold text-indigo-400 mb-2">Adaptive Challenge 생성됨</h3>
-                <p class="text-lg font-medium leading-snug">"아직 증명되지 않은 '예산 최적화' 역량을 검증하기 위한 45분짜리 실무 시나리오 과제가 준비되었습니다."</p>
-            </div>
+<section id="step-4" class="step workspace">
+<header class="topbar"><div class="logo"><i></i>Proofolio <span style="font-size:10px;color:#98a2b3;margin-left:7px">CLAIM VERIFICATION WORKSPACE</span></div><span class="badge">검증 대상 · 예산 최적화</span></header>
+<div class="workspace-main">
+<aside class="sidebar">
+<div class="section-label">01 · PORTFOLIO CLAIM</div>
+<div class="claim-card">
+<div class="eyebrow" style="font-size:9px;margin-bottom:4px"><i class="dot"></i> CANDIDATE CLAIM</div>
+<div class="claim">“광고 데이터를 분석하고 성과에 따라 예산을 최적화했습니다.”</div>
+<div class="claim-source">김지훈_마케팅_포트폴리오.pdf · 캠페인 프로젝트</div>
+</div>
+<div class="section-label" style="display:block;margin-top:23px">02 · WHAT WE KNOW</div>
+<div class="verification">
+<div><span>데이터 분석 경험</span><span class="verified">✓ 확인</span></div>
+<div><span>캠페인 운영 경험</span><span class="verified">✓ 확인</span></div>
+<div><span>고객 VOC 활용</span><span class="verified">✓ 확인</span></div>
+<div><span>실제 예산 배분 의사결정</span><span class="needed">△ 검증 필요</span></div>
+</div>
+<div style="margin-top:22px;padding:15px;background:#11131c;border-radius:14px;color:#fff">
+<div class="section-label" style="color:#9e96ff">03 · VERIFICATION GOAL</div>
+<p style="font-size:12px;line-height:1.65;margin:7px 0 0;color:#d6d8e1">포트폴리오의 주장을 반복해서 묻는 것이 아니라, <b>실제 업무에서 같은 판단을 내릴 수 있는지</b> 확인합니다.</p>
+</div>
+</aside>
 
-            <button onclick="goToStep(4)" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition">
-                맞춤형 실무 과제 시작하기
-            </button>
-        </div>
-    </div>
+<main class="editor">
+<div class="workspace-title"><div><div class="eyebrow"><i class="dot"></i> VERIFY IN ACTION</div><h2>실제 캠페인 데이터를 보고 판단하세요</h2></div><p>남은 시간 44:58</p></div>
+<div class="proof-intro"><b>검증 과제</b><p>신규 뷰티 브랜드의 잔여 예산 <b>500만 원</b>을 집행해야 합니다. 아래의 실제 업무와 유사한 데이터와 VOC를 바탕으로 매체 2개를 선정하고 예산을 배분하세요.</p></div>
 
-    <!-- STEP 4: Workspace -->
-    <div id="step-4" class="step-container flex-col bg-white">
-        <header class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
-            <h1 class="text-lg font-bold">Proofolio Workspace</h1>
-            <div class="text-sm font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg">남은 시간 44:58</div>
-        </header>
-        <div class="flex flex-1 overflow-hidden">
-            <!-- Problem -->
-            <div class="w-1/3 bg-slate-50 border-r border-slate-200 p-6 overflow-y-auto">
-                <h2 class="text-xl font-bold mb-4">미션: 매체 예산 최적화</h2>
-                <p class="text-sm text-slate-600 leading-relaxed mb-6">
-                    신규 뷰티 브랜드의 마케터로서 잔여 예산 500만 원을 집행해야 합니다. 우측의 'ROAS 데이터'와 'VOC 리포트'를 바탕으로 효율이 가장 좋은 매체 2개를 선정하고 근거를 작성하세요.
-                </p>
-                <div class="bg-white p-4 rounded-lg border border-slate-200 mb-4 shadow-sm">
-                    <h3 class="text-sm font-bold mb-2">1. 데이터 (ROAS)</h3>
-                    <ul class="text-xs space-y-2 text-slate-600">
-                        <li>- Meta Ads: CVR 2.4% / CAC 15,000</li>
-                        <li>- Google Search: CVR 5.1% / CAC 8,500</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
-                    <h3 class="text-sm font-bold mb-2">2. 고객 VOC</h3>
-                    <p class="text-xs text-slate-600">"검색해서 들어왔을 때 정보가 정확해서 샀어요." (Google 유입)</p>
-                </div>
-            </div>
-            <!-- Solution Input -->
-            <div class="flex-1 p-8">
-                <h3 class="text-lg font-bold mb-4">결과물 작성</h3>
-                <textarea class="w-full h-64 p-4 border border-slate-300 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none resize-none mb-6" placeholder="여기에 매체 선정 근거를 작성합니다..."></textarea>
-                <button onclick="submitWorkspace()" class="bg-slate-900 text-white font-bold py-3 px-8 rounded-xl hover:bg-slate-800 transition float-right">
-                    최종 제출하기
-                </button>
-            </div>
-        </div>
-    </div>
+<div class="dashboard-grid">
+<div class="data-panel">
+<div class="panel-title"><b>CAMPAIGN PERFORMANCE</b><span>최근 3개월 평균</span></div>
+<div class="kpis">
+<div class="kpi"><span>총 예산</span><b>5,000<span style="font-size:11px">만원</span></b></div>
+<div class="kpi"><span>최고 CVR</span><b>5.1%</b><em>Google Search</em></div>
+<div class="kpi"><span>최저 CAC</span><b>8,500원</b><em>Google Search</em></div>
+</div>
+<div class="chart">
+<div class="bar-wrap"><div class="bar bar-meta"></div><b>Meta</b><small>CAC 15,000</small></div>
+<div class="bar-wrap"><div class="bar bar-google"></div><b>Google</b><small>CAC 8,500</small></div>
+<div class="bar-wrap"><div class="bar bar-naver"></div><b>Naver</b><small>CAC 12,000</small></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
+<div style="font-size:9px;color:#667085">Meta<br><b style="color:#111827">CVR 2.4%</b></div>
+<div style="font-size:9px;color:#667085">Google Search<br><b style="color:#111827">CVR 5.1%</b></div>
+<div style="font-size:9px;color:#667085">Naver<br><b style="color:#111827">CVR 3.1%</b></div>
+</div>
+</div>
+<div class="voc-panel">
+<div class="panel-title"><b>CUSTOMER VOC</b><span>검색 유입 고객</span></div>
+<div class="voc"><p>“검색해서 들어왔을 때 <b>정보가 정확해서</b> 샀어요.”</p><small>— Google Search 유입 고객</small></div>
+<div class="signal"><i></i><span>정량 데이터와 정성 데이터를 함께 고려해야 합니다.</span></div>
+<div style="margin-top:12px;font-size:9px;color:#98a2b3;line-height:1.6">TIP · 단순히 가장 높은 효율의 매체를 고르는 것보다 <b style="color:#475467">왜 그 매체에 예산을 배분하는지</b> 설명하는 것이 중요합니다.</div>
+</div>
+</div>
 
-    <!-- STEP 5: AI Evaluating Loading -->
-    <div id="step-5" class="step-container flex-col items-center justify-center bg-indigo-900 text-white">
-        <div class="text-center">
-            <div class="loader w-16 h-16 mb-8 border-t-white"></div>
-            <h2 class="text-2xl font-bold mb-2">수행 과정 및 결과 분석 중...</h2>
-            <p class="text-indigo-200 text-sm">결과물뿐만 아니라 과제를 해결한 사고 과정(Process)을 평가합니다.</p>
-        </div>
-    </div>
+<div class="task-card">
+<h3>당신의 의사결정</h3><p>포트폴리오에서 주장한 '예산 최적화' 역량을 실제로 수행해보세요.</p>
+<div class="answer-grid">
+<div class="answer-box"><label>선정 매체 01</label><input id="media1" placeholder="예: Google Search"></div>
+<div class="answer-box"><label>배분 예산</label><input id="budget1" placeholder="예: 300만원"></div>
+<div class="answer-box"><label>선정 매체 02</label><input id="media2" placeholder="예: Naver"></div>
+<div class="answer-box"><label>배분 예산</label><input id="budget2" placeholder="예: 200만원"></div>
+</div>
+<div class="textarea-wrap"><label>DECISION RATIONALE · 의사결정 근거</label><textarea id="answer" placeholder="ROAS, CVR, CAC와 고객 VOC를 근거로 왜 이 매체를 선택했고 어떻게 예산을 배분했는지 작성해주세요."></textarea></div>
+<div class="hint">※ 제출 후 결과뿐 아니라 의사결정 과정과 근거를 함께 분석합니다.</div>
+<div style="display:flex;justify-content:flex-end;margin-top:13px"><button class="btn btn-dark" onclick="submitWorkspace()">검증 결과 생성하기 →</button></div>
+</div>
+</main>
+</div>
+</section>
 
-    <!-- STEP 6: Final HR Report -->
-    <div id="step-6" class="step-container flex-col bg-slate-50">
-        <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center">
-            <div>
-                <span class="text-xs font-bold text-slate-400 tracking-wider">HR DASHBOARD</span>
-                <h2 class="text-xl font-bold text-slate-800 mt-1">김지훈 지원자 최종 리포트</h2>
-            </div>
-            <button class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-bold">면접 연계 질문 보기</button>
-        </header>
-        
-        <div class="p-8 max-w-5xl mx-auto w-full space-y-6 fade-up">
-            <!-- Overall Score -->
-            <div class="flex gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 w-1/3 flex flex-col justify-center items-center">
-                    <p class="text-sm text-slate-500 font-medium mb-2">최종 종합 점수</p>
-                    <p class="text-5xl font-extrabold text-slate-800">92<span class="text-2xl text-slate-400 font-medium">/100</span></p>
-                    <span class="mt-4 px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">우수 (합격 권장)</span>
-                </div>
-                
-                <!-- Process Evidence -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 w-2/3">
-                    <h3 class="text-base font-bold mb-4">행동 패턴 관찰 (Process Evidence)</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-3">
-                            <div class="mt-0.5 bg-blue-100 text-blue-600 p-1 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
-                            <div>
-                                <p class="text-sm font-bold text-slate-800">입체적 데이터 활용</p>
-                                <p class="text-xs text-slate-500 mt-1">수치 데이터(ROAS) 확인 후 즉각적으로 정성 데이터(VOC)를 교차 조회하여 논리를 보강함.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="mt-0.5 bg-emerald-100 text-emerald-600 p-1 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                            <div>
-                                <p class="text-sm font-bold text-slate-800">Trade-off 고려 의사결정</p>
-                                <p class="text-xs text-slate-500 mt-1">단순 효율성뿐만 아니라 고객 획득 비용(CAC)을 고려하여 예산을 차등 분배하는 실무적 판단력이 돋보임.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section id="step-5" class="step loading" style="background:#17134a">
+<div><div class="loader-ring" style="border-top-color:#a79dff"></div><h2 id="evalText">실제 수행 결과를 분석하고 있습니다</h2><p>포트폴리오의 Claim과 실제 수행 Evidence를 연결하고 있습니다.</p><div class="logs"><div class="log done"><span class="check">✓</span> 과제 결과 분석</div><div class="log done"><span class="check">✓</span> 의사결정 근거 분석</div><div class="log"><span style="color:#a79dff">✦</span> Portfolio Claim과 Evidence 연결 중</div></div></div>
+</section>
 
-            <!-- Detail Breakdown -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 border-b border-slate-100 text-sm">
-                        <tr>
-                            <th class="py-4 px-6 font-semibold text-slate-600">평가 역량</th>
-                            <th class="py-4 px-6 font-semibold text-slate-600">검증 방식</th>
-                            <th class="py-4 px-6 font-semibold text-slate-600">결과</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-sm">
-                        <tr>
-                            <td class="py-4 px-6 font-bold text-slate-800">데이터 분석력</td>
-                            <td class="py-4 px-6 text-slate-500">포트폴리오 분석 (사전 검증)</td>
-                            <td class="py-4 px-6"><span class="text-slate-800 font-semibold">88점</span></td>
-                        </tr>
-                        <tr class="bg-indigo-50/30">
-                            <td class="py-4 px-6 font-bold text-indigo-700 flex items-center gap-2">
-                                우선순위 및 예산 설정
-                                <span class="bg-indigo-100 text-indigo-700 text-[10px] px-2 py-0.5 rounded">Skill Gap 해결</span>
-                            </td>
-                            <td class="py-4 px-6 text-slate-500">맞춤형 실무 과제 (진행 검증)</td>
-                            <td class="py-4 px-6"><span class="text-indigo-700 font-bold">94점</span></td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-bold text-slate-800">문제 해결 논리성</td>
-                            <td class="py-4 px-6 text-slate-500">과제 수행 Process 로그 분석</td>
-                            <td class="py-4 px-6"><span class="text-slate-800 font-semibold">90점</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<section id="step-6" class="step report">
+<header class="topbar"><div class="logo"><i></i>Proofolio <span style="font-size:10px;color:#98a2b3;margin-left:7px">HR DASHBOARD</span></div><button class="btn btn-primary" style="padding:10px 15px;font-size:11px">면접 질문 보기 →</button></header>
+<div class="report-body">
+<div class="report-title"><div><div class="eyebrow"><i class="dot"></i> CLAIM → PROOF</div><h1>김지훈 지원자 최종 검증 리포트</h1><p>포트폴리오의 주장과 실제 수행 결과를 하나의 Evidence로 연결했습니다.</p></div><span class="badge">PERFORMANCE MARKETER</span></div>
+<div class="grid">
+<div class="card score"><div class="score-label">최종 종합 점수</div><div class="score-number">92<span>/100</span></div><div class="progress"><i></i></div><div class="status ok" style="display:inline-block;margin-top:15px">우수 · 합격 권장</div></div>
+<div class="card evidence"><h3>새롭게 생성된 Evidence <span style="font-size:9px;color:#98a2b3;font-weight:500">VERIFICATION RESULT</span></h3>
+<div class="evidence-item"><div class="evidence-icon">✓</div><div><b>예산 최적화 역량 검증</b><p>제한된 예산 안에서 CAC와 CVR을 비교하고 Google Search 중심으로 예산을 배분했습니다.</p></div></div>
+<div class="evidence-item"><div class="evidence-icon">↗</div><div><b>데이터 + VOC 교차 판단</b><p>정량 지표만으로 결정하지 않고 Google 유입 고객 VOC를 함께 확인해 의사결정을 보완했습니다.</p></div></div>
+</div>
+</div>
+<div class="claim-proof">
+<div class="section-label" style="color:#9e96ff">PORTFOLIO CLAIM</div><div style="margin-top:5px"><b>“광고 데이터를 분석하고 성과에 따라 예산을 최적화했습니다.”</b></div>
+<div class="arrow">↓ 실제 수행으로 검증</div>
+<div class="section-label" style="color:#9e96ff">NEW PROOF</div><div style="margin-top:5px"><span>실제 광고 데이터를 기반으로 매체별 효율을 비교하고 제한된 예산을 차등 배분하는 역량이 확인됨.</span></div>
+</div>
+<div class="card table-card"><div class="table-title">역량별 검증 결과</div><table><thead><tr><th>평가 역량</th><th>검증 근거</th><th>결과</th></tr></thead><tbody>
+<tr><td>데이터 분석력</td><td>포트폴리오 Claim · 사전 근거 확인</td><td><b>88점</b></td></tr>
+<tr class="highlight"><td>예산 최적화 <span class="status gap-status" style="margin-left:5px">CLAIM VERIFIED</span></td><td>실제 데이터 기반 실무 수행</td><td class="score-blue">94점</td></tr>
+<tr><td>문제 해결 논리성</td><td>의사결정 근거 및 Process 분석</td><td><b>90점</b></td></tr>
+</tbody></table></div>
+</div>
+</section>
 
-    <script>
-        function goToStep(stepNumber) {
-            document.querySelectorAll('.step-container').forEach(el => {
-                el.classList.remove('step-active');
-            });
-            const nextStep = document.getElementById('step-' + stepNumber);
-            nextStep.classList.add('step-active');
-            
-            // Re-trigger animation
-            const fadeEls = nextStep.querySelectorAll('.fade-up');
-            fadeEls.forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight; // trigger reflow
-                el.style.animation = null; 
-            });
-        }
-
-        function startAnalysis() {
-            goToStep(2);
-            
-            // Simulate AI Loading Steps
-            setTimeout(() => document.getElementById('log-1').classList.remove('opacity-50'), 1000);
-            setTimeout(() => document.getElementById('log-2').classList.remove('opacity-50'), 2500);
-            setTimeout(() => {
-                document.getElementById('log-3').classList.remove('opacity-50');
-                document.getElementById('loading-text').innerText = "Skill Gap을 발견했습니다!";
-            }, 4000);
-            
-            // Move to Step 3
-            setTimeout(() => goToStep(3), 5500);
-        }
-
-        function submitWorkspace() {
-            goToStep(5);
-            // Move to Final Report after 3 seconds
-            setTimeout(() => goToStep(6), 3000);
-        }
-    </script>
+<script>
+function goToStep(n){document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById('step-'+n).classList.add('active');window.scrollTo(0,0)}
+function startAnalysis(){goToStep(2);setTimeout(()=>document.getElementById('log1').classList.add('done'),650);setTimeout(()=>document.getElementById('log2').classList.add('done'),1500);setTimeout(()=>{document.getElementById('log3').classList.add('done');document.getElementById('loading-text').textContent='검증이 필요한 Claim을 발견했습니다'},2500);setTimeout(()=>goToStep(3),3500)}
+function submitWorkspace(){goToStep(5);setTimeout(()=>document.getElementById('evalText').textContent='Portfolio Claim과 실제 수행 결과를 연결했습니다',1800);setTimeout(()=>goToStep(6),3000)}
+</script>
 </body>
 </html>
